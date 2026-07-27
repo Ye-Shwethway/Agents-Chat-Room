@@ -4,5 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'app.dart';
 
 void main() {
-  runApp(const ProviderScope(child: AgentChatroomApp()));
+  // Riverpod's ProviderScope provides the app-wide Riverpod context.
+  // Provider-internal disposals are wired through `ref.onDispose` in
+  // `lib/providers/app_providers.dart`.
+  runApp(const ProviderScope(child: App()));
 }

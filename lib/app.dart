@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'screens/room_list_screen.dart';
+import 'ui/screens/room_list_screen.dart';
 
 /// The root widget for Agent Chatroom.
 ///
