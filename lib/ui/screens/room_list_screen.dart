@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../domain/room.dart';
 import '../../providers/app_providers.dart';
 
 /// Lists all Rooms. Tapping a Room navigates to the Room screen (TODO).

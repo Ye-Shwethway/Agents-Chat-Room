@@ -1,20 +1,18 @@
+import 'package:drift/drift.dart' show Value;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/db/database.dart';
 import '../domain/agent.dart';
 import '../domain/room.dart';
+import 'app_providers.dart';
 
 /// Controller for creating/updating/deleting Agents.
-///
-/// Wrap any DB write in `AsyncValue.guard` so the UI can render errors
-/// uniformly. UI layer calls these from Providers or directly.
 class AgentController {
   AgentController(this._db, this._ref);
-
   final AppDatabase _db;
   final Ref _ref;
 
-  Future<void> create(Agent agent) async {
+  Future<void> upsert(DomainAgent agent) async {
     await _db.upsertAgent(
       AgentsCompanion.insert(
         id: agent.id,
@@ -26,10 +24,6 @@ class AgentController {
       ),
     );
     _ref.invalidate(agentsProvider);
-  }
-
-  Future<void> update(Agent agent) async {
-    await create(agent);  // same upsert
   }
 
   Future<void> delete(String id) async {
@@ -45,11 +39,10 @@ final agentControllerProvider = Provider<AgentController>((ref) {
 /// Controller for Rooms.
 class RoomController {
   RoomController(this._db, this._ref);
-
   final AppDatabase _db;
   final Ref _ref;
 
-  Future<void> create(Room room, List<String> agentIds) async {
+  Future<void> upsert(DomainRoom room, List<String> agentIds) async {
     await _db.transaction(() async {
       await _db.upsertRoom(
         RoomsCompanion.insert(
