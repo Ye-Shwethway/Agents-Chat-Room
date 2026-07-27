@@ -1,9 +1,7 @@
-import 'package:drift/drift.dart' show Value;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/db/database.dart';
 import '../data/providers/gemini_adapter.dart';
-import '../data/providers/key_vault.dart';
 import '../data/providers/nanogpt_adapter.dart';
 import '../data/providers/openai_adapter.dart';
 import '../data/providers/openrouter_adapter.dart';

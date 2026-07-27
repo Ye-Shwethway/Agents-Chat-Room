@@ -21,9 +21,7 @@ class RoomListScreen extends ConsumerWidget {
             icon: const Icon(Icons.settings_outlined),
             tooltip: 'Settings',
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Settings — coming soon')),
-              );
+              Navigator.of(context).pushNamed('/settings');
             },
           ),
         ],
