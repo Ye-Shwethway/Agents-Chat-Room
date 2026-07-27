@@ -18,12 +18,12 @@ class OpenAiAdapter implements ProviderAdapter {
     required String apiKey,
     required List<Map<String, String>> messages,
   }) async {
-    final response = await Dio().post(
+    final dio = Dio(BaseOptions(headers: {
+      'Authorization': 'Bearer $apiKey',
+      'Content-Type': 'application/json',
+    }));
+    final response = await dio.post(
       _baseUrl,
-      headers: {
-        'Authorization': 'Bearer $apiKey',
-        'Content-Type': 'application/json',
-      },
       data: {
         'model': modelId,
         'messages': messages,

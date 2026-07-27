@@ -1,5 +1,3 @@
-import 'package:dio/dio.dart';
-
 /// Abstract adapter that every LLM provider must implement.
 ///
 /// The DebateEngine calls [callAgent] with a list of messages

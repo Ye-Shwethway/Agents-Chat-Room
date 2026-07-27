@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'ui/screens/room_list_screen.dart';
+import 'screens/room_list_screen.dart';
 
-class AgentChatroomApp extends StatelessWidget {
-  const AgentChatroomApp({super.key});
+/// The root widget for Agent Chatroom.
+///
+/// In v0.1 this is just a placeholder for the Room list. Future versions
+/// will add navigation, providers, and settings screens here.
+class App extends StatelessWidget {
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,18 +15,8 @@ class AgentChatroomApp extends StatelessWidget {
       title: 'Agent Chatroom',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF6750A4),
-          brightness: Brightness.light,
-        ),
         useMaterial3: true,
-      ),
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF6750A4),
-          brightness: Brightness.dark,
-        ),
-        useMaterial3: true,
+        colorSchemeSeed: Colors.blue,
       ),
       home: const RoomListScreen(),
     );

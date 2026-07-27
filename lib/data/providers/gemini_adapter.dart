@@ -19,7 +19,6 @@ class GeminiAdapter implements ProviderAdapter {
     required List<Map<String, String>> messages,
   }) async {
     final parts = messages.map((m) {
-      final role = m['role'] == 'system' ? 'user' : m['role'];
       return {'text': m['content']!};
     }).toList();
 

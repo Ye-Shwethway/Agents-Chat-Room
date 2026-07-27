@@ -1,12 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '../domain/agent.dart';
-import '../domain/message.dart';
-import '../domain/room.dart';
 import '../data/providers/provider_adapter.dart';
-
-/// Factory that produces a ProviderAdapter for a given LlmProvider.
-typedef ProviderFactory = ProviderAdapter Function(LlmProvider provider);
 
 /// The DebateEngine orchestrates:
 /// - Single mode: prompt → all Agents reply once → transcript freezes
@@ -26,7 +20,6 @@ typedef ProviderFactory = ProviderAdapter Function(LlmProvider provider);
 ///   while (!engine.isFinished) {
 ///     await engine.processNextRound(); // auto-advances if timer/rounds allow
 ///   }
-@immutable
 class DebateEngine {
   final ProviderFactory providerFactory;
 
@@ -37,16 +30,13 @@ class DebateEngine {
   final int maxRounds;
 
   /// Whether the engine is actively running.
-  bool get isRunning => _running;
-  bool _running = false;
+  bool isRunning = false;
 
   /// Whether the engine is currently paused (user paused all).
-  bool get isPaused => _paused;
-  bool _paused = false;
+  bool isPaused = false;
 
   /// Current round number (1-based). 0 means not started.
-  int get currentRound => _currentRound;
-  int _currentRound = 0;
+  int currentRound = 0;
 
   /// Tracks Agent progress through the retry budget.
   final Map<String, int> _retryCount = {};
@@ -64,12 +54,11 @@ class DebateEngine {
   /// Returns true if the session started (not already running).
   bool start({
     required String topic,
-    required List<Agent> roster,
   }) {
-    if (_running) return false;
-    _running = true;
-    _paused = false;
-    _currentRound = 0;
+    if (isRunning) return false;
+    isRunning = true;
+    isPaused = false;
+    currentRound = 0;
     _retryCount.clear();
     return true;
   }
@@ -82,35 +71,32 @@ class DebateEngine {
     // This is a hook — the actual round creation happens in the
     // DebateService layer (see services/debate_service.dart).
     // Engine stores intent; service executes.
-    _takeTurnMessage = message;
   }
-
-  String? _takeTurnMessage;
 
   /// Pause the engine (called by pauseAll AppBar action).
   void pause() {
-    if (!_running) return;
-    _paused = true;
+    if (!isRunning) return;
+    isPaused = true;
   }
 
   /// Resume after pause.
   void resume() {
-    _paused = false;
+    isPaused = false;
   }
 
   /// Stop and reset the engine.
   void stop() {
-    _running = false;
-    _paused = false;
-    _currentRound = 0;
+    isRunning = false;
+    isPaused = false;
+    currentRound = 0;
     _retryCount.clear();
   }
 
   /// Check if the current round should be processed.
   bool canProcessRound() {
-    if (!_running) return false;
-    if (_paused) return false;
-    if (_currentRound >= maxRounds) return false;
+    if (!isRunning) return false;
+    if (isPaused) return false;
+    if (currentRound >= maxRounds) return false;
     return true;
   }
 
@@ -118,7 +104,7 @@ class DebateEngine {
   bool isRoundComplete(int completed) => completed >= maxRounds;
 
   /// Check if the engine hit the max round cap.
-  bool hitMaxRounds() => _currentRound >= maxRounds;
+  bool hitMaxRounds() => currentRound >= maxRounds;
 
   /// Increment retry count for an Agent.
   void incrementRetry(String agentId) {
@@ -132,5 +118,5 @@ class DebateEngine {
   bool isStalled(String agentId) => getRetryCount(agentId) >= retryBudget;
 
   /// Advance to the next round.
-  int nextRound() => ++_currentRound;
+  int nextRound() => ++currentRound;
 }

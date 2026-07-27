@@ -18,9 +18,11 @@ class NanoGptAdapter implements ProviderAdapter {
     required String apiKey,
     required List<Map<String, String>> messages,
   }) async {
-    final response = await Dio().post(
+    final dio = Dio(BaseOptions(headers: {
+      'Authorization': 'Bearer $apiKey',
+    }));
+    final response = await dio.post(
       _baseUrl,
-      headers: {'Authorization': 'Bearer $apiKey'},
       data: {
         'model': modelId,
         'messages': messages,
