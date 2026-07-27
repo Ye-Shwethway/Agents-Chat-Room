@@ -1,0 +1,25 @@
+# Generated files
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Secrets — never commit
+secrets/.gitignore.txt
+secrets/*.pem
+secrets/*.key
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local artifacts
+*.log
